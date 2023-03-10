@@ -18,8 +18,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo "hey"
-      - name: test name
-        uses: actions/checkout@v3
-      - run: echo "clone repo"
-      - run: ls ${{ github.workspace }}
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9.7'
+      - run: pip install -r requirements.txt
+      - run: python pipeline.py
+
+steps:
+- uses: actions/checkout@v3
+- uses: actions/setup-python@v4
+  with:
+    python-version: '3.10' 
+- run: python my_script.py
