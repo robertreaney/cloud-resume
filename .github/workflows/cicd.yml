@@ -33,13 +33,13 @@ jobs:
         with:
           python-version: '3.9.16'
           cache: 'pip'
-      - name: Cache Pip
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+      # - name: Cache Pip
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: ~/.cache/pip
+      #     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pip-
       - run: pip install -r requirements.txt
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
