@@ -57,12 +57,41 @@
                         headers: {
                         'Content-Type': 'application/json',
                         'Authorization': 'm1GL1eXff98vf51VQ9AJ94TKmdWTwSfT7xbnHgMp',
-                        'Access-Control-Allow-Origin': '*'
                         }
                     })
                     .then(response => response.json())
                     .then(data => JSON.parse(data.body).Items['0'].number['N'])
                     .then(data => {document.getElementById("count").innerHTML = data})
+                
+                // increment database counter
+                // data = {
+                //     "httpMethod": "PUT",
+                //     "body": {
+                //         "TableName": "reaney-resume-website",
+                //         "Key": {
+                //         "id": {
+                //             "S": "count"
+                //         }
+                //         },
+                //         "AttributeUpdates": {
+                //         "number": {
+                //             "Action": "ADD",
+                //             "Value": {
+                //             "N": "1"
+                //             }
+                //         }
+                //         }
+                //     }
+                //     }
+                // fetch('https://le5erao8i3.execute-api.us-east-1.amazonaws.com/test/dyanmodbmanager', {
+                //         method: 'PUT',
+                //         body: JSON.stringify(data),
+                //         headers: {
+                //         'Content-Type': 'application/json',
+                //         'Authorization': 'm1GL1eXff98vf51VQ9AJ94TKmdWTwSfT7xbnHgMp',
+                //         'Access-Control-Allow-Origin': '*'
+                //         }
+                //     })
             </script>
                 Email: <a class="email" href="mailto:robertlreaney@gmail.com">robertlreaney@gmail.com</a>
             </p>
