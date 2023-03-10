@@ -1,0 +1,25 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+run-name: ${{ github.actor }} is testing out cicd on github
+
+# Controls when the workflow will run
+on: [push]
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+#   workflow_dispatch:
+
+jobs:
+  deploy-website:
+    name: Deploy Website to s3
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo "hey"
+      - name: test name
+        uses: actions/checkout@v3
+      - run: echo "clone repo"
+      - run: ls ${{ github.workspace }}
