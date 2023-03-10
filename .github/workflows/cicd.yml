@@ -11,26 +11,34 @@ on: [push]
 #     branches: [ "main" ]
 #   workflow_dispatch:
 
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+env:
+    # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    AWS_DEFAULT_REGION: 'us-east-1'
+
 jobs:
   deploy-website:
     name: Deploy Website to s3
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v3
-      # - name: Setup Deps
-      #   uses: actions/setup-python@v4
-      #   with:
-      #     python-version: '3.9.16'
-      #     cache: 'pip'
-      # - run: pip install -r requirements.txt
-      # - name: AWS Credentials
-      #   uses: aws-actions/configure-aws-credentials@v2
-      #   with:
-      #     role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-      #     aws-region: us-east-1
-      # - name: Update s3
-      #   run: python pipeline.py
-      - name: Test
-        run: echo ${{ secrets.AWS_ROLE_ARN }}
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Deps
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9.16'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::293245919051:role/github-s3
+          role-session-name: githubActions
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+      - name: Update s3
+        run: python pipeline.py
