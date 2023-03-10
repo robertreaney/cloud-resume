@@ -33,11 +33,18 @@ jobs:
         with:
           python-version: '3.9.16'
           cache: 'pip'
+      - name: Cache Pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
       - run: pip install -r requirements.txt
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::293245919051:role/github-s3
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           role-session-name: githubActions
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
       - name: Update s3
