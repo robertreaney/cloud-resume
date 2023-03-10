@@ -18,9 +18,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Deps
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9.16'
-      - run: pip install -r requirements.txt
-      - run: python pipeline.py
+          cache: 'pip'
+        run: pip install -r requirements.txt
+      - name: AWS Credentials
+        uses: aaws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: {{ secrets.AWS_ROLE_ARN }}
+          role-session-name: githubActions
+          aws-region: us-east-1
+      - name: Update s3
+        run: python pipeline.py
