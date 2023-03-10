@@ -29,8 +29,7 @@ jobs:
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: {{ secrets.AWS_ROLE_ARN }}
-          role-session-name: githubActions
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
       - name: Update s3
         run: python pipeline.py
