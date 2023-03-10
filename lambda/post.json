@@ -1,0 +1,6 @@
+{
+  "httpMethod": "POST",
+  "queryStringParameters": {
+    "TableName": "reaney-resume-website"
+  }
+}

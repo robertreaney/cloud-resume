@@ -45,24 +45,6 @@
                 Unique Visits: <span id="count"></span><br />
             </p>
             <script>
-                data = {
-                    "httpMethod": 'POST',
-                    'queryStringParameters': {
-                        'TableName': 'reaney-resume-website'
-                    }
-                    }
-                fetch('https://le5erao8i3.execute-api.us-east-1.amazonaws.com/test/dyanmodbmanager', {
-                        method: 'POST',
-                        body: JSON.stringify(data),
-                        headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'm1GL1eXff98vf51VQ9AJ94TKmdWTwSfT7xbnHgMp',
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => JSON.parse(data.body).Items['0'].number['N'])
-                    .then(data => {document.getElementById("count").innerHTML = data})
-                
                 // increment database counter
                 data = {
                     "httpMethod": "PUT",
@@ -91,6 +73,24 @@
                         'Authorization': 'm1GL1eXff98vf51VQ9AJ94TKmdWTwSfT7xbnHgMp',
                         }
                     })
+                    
+                data = {
+                    "httpMethod": 'POST',
+                    'queryStringParameters': {
+                        'TableName': 'reaney-resume-website'
+                    }
+                    }
+                fetch('https://le5erao8i3.execute-api.us-east-1.amazonaws.com/test/dyanmodbmanager', {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'm1GL1eXff98vf51VQ9AJ94TKmdWTwSfT7xbnHgMp',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => JSON.parse(data.body).Items['0'].number['N'])
+                    .then(data => {document.getElementById("count").innerHTML = data})
             </script>
                 Email: <a class="email" href="mailto:robertlreaney@gmail.com">robertlreaney@gmail.com</a>
             </p>
@@ -109,8 +109,8 @@
             
             <dt>Education</dt>
             <dd>
-                <h2>Withering Madness University - Planet Vhoorl</h2>
-                <p><strong>Major:</strong> Public Relations<br />
+                <h2>University of Central Florida</h2>
+                <p><strong>Major:</strong> Statistical Computing M.S. - Data Mining<br />
                    <strong>Minor:</strong> Scale Tending</p>
             </dd>
             

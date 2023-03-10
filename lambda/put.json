@@ -1,0 +1,19 @@
+{
+  "httpMethod": "PUT",
+  "body": {
+    "TableName": "reaney-resume-website",
+    "Key": {
+      "id": {
+        "S": "count"
+      }
+    },
+    "AttributeUpdates": {
+      "number": {
+        "Action": "ADD",
+        "Value": {
+          "N": "1"
+        }
+      }
+    }
+  }
+}
