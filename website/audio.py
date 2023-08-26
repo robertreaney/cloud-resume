@@ -2,7 +2,6 @@ import wave
 import contextlib
 import ffmpeg
 
-
 class Audio:
     def convert_webm_to_wav(self, input_path, output_path):
         input_stream = ffmpeg.input(input_path)
