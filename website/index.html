@@ -21,11 +21,13 @@
         a { color: #999; text-decoration: none; border-bottom: 1px dotted #999; }
         a:hover { border-bottom-style: solid; color: black; }
         ul { margin: 0 0 32px 17px; }
+        ul li { font-size: 12px; }
         #objective { width: 500px; float: left; }
         #objective p { font-family: Georgia, Serif; font-style: italic; color: #666; }
         dt { font-style: italic; font-weight: bold; font-size: 18px; text-align: right; padding: 0 26px 0 0; width: 150px; float: left; height: 100px; border-right: 1px solid #999;  }
         dd { width: 600px; float: right; }
         dd.clear { float: none; margin: 0; height: 15px; }
+        p.scrollable {max-height: 150px; overflow: auto;}
      </style>
 </head>
 
@@ -33,14 +35,13 @@
 
     <div id="page-wrap">
     
-        <img src="images/mgn.png" alt="Photo of Cthulu" id="pic" width="300" height="150" />
+        <img src="images/mgn.png" alt="Photo of Cthulu" id="pic" width="300" height="200" />
     
         <div id="contact-info" class="vcard">
         
             <!-- Microformats! -->
         
             <h1 class="fn">Robert Reaney</h1>
-        
             <p>
                 Unique Visits: <span id="count"></span><br />
             </p>
@@ -98,63 +99,96 @@
                 
         <div id="objective">
             <p>
-                A lifelong learner passionate about machine learning.
+                Someone you can trust with customers and stakeholders, who can run a meeting, and will be a positive addition to your business. I come to work with an eagerness to solve difficult problems!
             </p>
         </div>
         
         <div class="clear"></div>
         
         <dl>
+            
+            <dd class="clear"></dd>
+
+            <dt>Project Showcase</dt>
+            <dd>
+                <h2> AI Assistant </h2>
+                <button id="record">Record</button>
+                <button id="playback">Playback</button>
+                <button id="stop">Stop</button>
+                <p id="status" class="scrollable">Use the record button to ask ChatGPT a question and have the answer posted here!</p>
+                <script src="static/js/main.js"></script>
+            </dd>
+
+            <dd class="clear"></dd>
+            
+            <dt>Experience</dt>
+            <dd>
+                <h2>IntelliBridge <span>Data Engineer/Scientist - Remote, NC - May 2023 - Present</span></h2>
+                <ul>
+                    <li>Managed data backend for company's AI/ML commercial solution.</li>
+                    <li>Architected data warehouse and pipelines to reduce response time for client requests from 1 month to 1 day.</li>
+                    <li>Responsible for delegating work to 1 intern and 1 part-time employee in first 2 months of employment.</li>
+                    <li>Established repository structures, development procedures, and infrastructure as code for department.</li>
+                    <li>Responsible for entire data ELT lifecycle pulling from multiple producers and promoting visibility for numerous customers.</li>
+                    <li>Created live data workflows with production code as python libraries delivered with github ci/cd to cloud environments in aws and databricks.</li>
+                </ul>
+                
+                <h2>Anyar, Inc. <span>Lead Data Scientist - Remote, FL - October 2020 - May 2023</span></h2>
+                <ul>
+                    <li>Technical lead for data science department and first point of contact for stakeholders. Modeling, simulation, and analysis (MS&A) support for numerous defense related research and development organizations. Served as the sole Subject Matter Expert for data science and machine learning across numerous projects totaling over $20,000,000 in funding.</li>
+                    <li>Led team of up to 8 across 4 or more simultaneous data science projects.</li>
+                    <li>Established company's machine learning research department and grew projects into continued funding and usable libraries.</li>
+                    <li>Created ML test suite to benchmark novel algorithm development.</li>
+                    <li>Deployed standardized ML training across a variety of hardware including High Performance Computing systems using Docker and Singularity containers.</li>
+                    <li>Consulted on technical and architectural decisions for multi-million dollar analysis efforts.</li>
+                    <li>Led business development for company's flagship software.</li>
+                    <li>Project manager for Graph Neural Network multi-year research efforts with additional funding awards totaling 600k to research fast-running surrogates for finite element methods.</li>
+                    <li>Automated analysis pipelines using python, gitlab, Docker, and cloud computing.</li>
+                    <li>Coordinated scientists, engineers, analysts, and developers to translate design objectives and available metrics into actionable analysis plans and outcomes.</li>
+                    <li>Developed and delivered presentations and training for audiences of varying technical expertise.</li>
+                </ul>
+                
+                <h2>University of Central Florida <span>GTA - FL - August 2018 - May 2020</span></h2>
+                <ul>
+                    <li>STA 2023 (Statistics I) & STA 4163 (Statistics 2)</li>
+                </ul>
+                
+                <h2>Lake Brantley High School <span>Teacher - FL - August 2017 - May 2018</span></h2>
+                <ul>
+                    <li>Introduced public school to individualized learning programs for at risk students.</li>
+                </ul>
+                
+            </dd>
             <dd class="clear"></dd>
             
             <dt>Education</dt>
             <dd>
                 <h2>University of Central Florida</h2>
                 <p><strong>Major:</strong> Statistical Computing M.S. - Data Mining<br />
-                   <strong>Minor:</strong> Scale Tending</p>
+                   <strong>GPA:</strong> 4.0</p>
             </dd>
-            
-            <dd class="clear"></dd>
-            
-            <dt>Skills</dt>
             <dd>
-                <h2>Office skills</h2>
-                <p>Office and records management, database administration, event organization, customer support, travel coordination</p>
-                
-                <h2>Computer skills</h2>
-                <p>Microsoft productivity software (Word, Excel, etc), Adobe Creative Suite, Windows</p>
+                <h2>University of Central Florida</h2>
+                <p><strong>Major:</strong> Mathematics B.S. - Data Mining<br />
+                   <strong>GPA:</strong> 3.4</p>
             </dd>
             
             <dd class="clear"></dd>
             
-            <dt>Experience</dt>
+            <dt>Recognitions</dt>
             <dd>
-                <h2>Doomsday Cult <span>Leader/Overlord - Baton Rogue, LA - 1926-2010</span></h2>
-                <ul>
-                    <li>Inspired and won highest peasant death competition among servants</li>
-                    <li>Helped coordinate managers to grow cult following</li>
-                    <li>Provided untimely deaths to all who opposed</li>
-                </ul>
-                
-                <h2>The Watering Hole <span>Bartender/Server - Milwaukee, WI - 2009</span></h2>
-                <ul>
-                    <li>Worked on grass-roots promotional campaigns</li>
-                    <li>Reduced theft and property damage percentages</li>
-                    <li>Janitorial work, Laundry</li>
-                </ul> 
-            </dd>
-            
-            <dd class="clear"></dd>
-            
-            <dt>Hobbies</dt>
-            <dd>World Domination, Deep Sea Diving, Murder Most Foul</dd>
-            
-            <dd class="clear"></dd>
-            
-            <dt>References</dt>
-            <dd>Available on request</dd>
-            
-            <dd class="clear"></dd>
+                <!-- <h2>Office skills</h2> -->
+                <p>
+                    2022 19th SimTim. Las Vegas, NV. ”Large-scale Parallelized Simulation”. <br>
+                    2022 90th MORS Symposium. Quantico, VA. ”Large-scale Parallelized Simulation”.<br>
+                    2022 Digital Engineering Sunmit. Niceville, FL. ”Large-scale Parallelized Simulation”.<br>
+                    2021 Technical Interchange Meeting. Raleigh, NC.<br>
+                    2021 18th SimTim. Las Vegas, NV. ”Distributed Scientific Workflows with SOFA”<br>
+                    2021 89th MORS Symposium. Remote. ”Applied UQ for V&V of Simulation Systems”<br>
+                    2020 American Board for Certification of Teacher Excellence - Mathematics Cert<br>
+                    2009 3rd Degree Black Belt, Chun-Kuk-Do
+                </p>
+            </dd>                
         </dl>
         
         <div class="clear"></div>
