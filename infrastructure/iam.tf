@@ -31,7 +31,7 @@ resource "aws_iam_policy" "ec2_ecr_s3_access_policy" {
         Resource = "*"
       },
       {
-        Action   = [
+        Action = [
           "ecr:GetDownloadUrlForLayer",
           "ecr:BatchGetImage",
           "ecr:BatchCheckLayerAvailability"
@@ -45,7 +45,7 @@ resource "aws_iam_policy" "ec2_ecr_s3_access_policy" {
 
 # Attach the policy to the role
 resource "aws_iam_role_policy_attachment" "ec2_s3_attach" {
-  policy_arn = aws_iam_policy.s3_full_access_policy.arn
+  policy_arn = aws_iam_policy.ec2_ecr_s3_access_policy.arn
   role       = aws_iam_role.ec2_s3_access_role.name
 }
 

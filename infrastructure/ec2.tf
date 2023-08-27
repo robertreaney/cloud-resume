@@ -34,9 +34,9 @@ resource "aws_security_group" "website_server_sg" {
 }
 
 resource "aws_instance" "website_server" {
-  ami           = "ami-053b0d53c279acc90"
-  instance_type = "t2.micro"
-  iam_instance_profile = aws_iam_instance_profile.ec2_s3_instance_profile.name
+  ami                    = "ami-053b0d53c279acc90"
+  instance_type          = "t2.micro"
+  iam_instance_profile   = aws_iam_instance_profile.ec2_s3_instance_profile.name
   key_name               = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_security_group.website_server_sg.id]
 
