@@ -29,8 +29,12 @@ aws ecr get-login-password --region us-east-1 | sudo docker login -u AWS --passw
 # pull the website image
 sudo docker pull ${DOCKER_IMAGE_NAME}
 
+
 # start the application
 sudo docker run --name website-server -d -p 443:5000 ${DOCKER_IMAGE_NAME}
+
+# sudo docker pull 293245919051.dkr.ecr.us-east-1.amazonaws.com/cloud-resume
+# sudo docker run --name website-server -d -p 443:5000 293245919051.dkr.ecr.us-east-1.amazonaws.com/cloud-resume
 
 # save image name for debuggin
 echo "export DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME}" >> /home/ubuntu/.bashrc

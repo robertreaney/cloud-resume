@@ -38,11 +38,16 @@ resource "aws_iam_policy" "ec2_ecr_s3_access_policy" {
         ],
         Effect   = "Allow",
         Resource = aws_ecr_repository.cloud-resume.arn
+      },
+      {
+        Action    = "ecr:GetAuthorizationToken",
+        Effect    = "Allow",
+        Resource = "*"
       }
     ]
   })
 
-  depends_on = [ aws_ecr_repository.cloud-resume ]
+  depends_on = [aws_ecr_repository.cloud-resume]
 }
 
 # Attach the policy to the role
