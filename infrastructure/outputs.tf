@@ -4,9 +4,11 @@ output "ecr_repository_url" {
 }
 
 output "docker_image" {
-  value = docker_registry_image.website.name
+  description = "Website docker image name."
+  value       = docker_registry_image.website.name
 }
 
 output "website_server" {
-  value = aws_instance.website_server.public_ip
+  description = "public ip4"
+  value       = aws_instance.website_server.public_ip
 }

@@ -21,6 +21,13 @@ resource "aws_security_group" "website_server_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -40,10 +47,21 @@ resource "aws_instance" "website_server" {
   key_name               = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_security_group.website_server_sg.id]
 
+  # user_data = replace(file("${path.module}/ec2_startup.sh"), "DOCKER_IMAGE_NAME", docker_registry_image.website.name)
+  user_data = data.template_file.ec2-startup.rendered
+
+  depends_on = [docker_registry_image.website]
+
   tags = {
-    Name = "CloudResumeServer"
+    Name = "WebsiteServer"
   }
+}
 
-  user_data = replace(file("${path.module}/ec2_startup.sh"), "DOCKER_IMAGE_NAME", docker_registry_image.website.name)
+# create elastic ip address for ec2 instance
+resource "aws_eip" "website_server" {
+  instance = aws_instance.website_server.id
 
+  tags = {
+    Name = "website-server-eip"
+  }
 }

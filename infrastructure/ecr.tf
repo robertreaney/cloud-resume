@@ -39,7 +39,7 @@ resource "docker_image" "website" {
   }
 
   triggers = {
-    dir_sha1 = sha1(join("", [for f in fileset(path.module, "../website/*") : filesha1(f)]))
+    dir_sha1 = sha1(join("", [for f in fileset(path.module, "../website/*") : filesha1(f) if !(f == "../website/__pycache__" || f == "../website/recording.wav")]))
   }
 }
 
@@ -47,6 +47,6 @@ resource "docker_image" "website" {
 resource "docker_registry_image" "website" {
   name = docker_image.website.name
   triggers = {
-    dir_sha1 = sha1(join("", [for f in fileset(path.module, "../website/*") : filesha1(f)]))
+    dir_sha1 = sha1(join("", [for f in fileset(path.module, "../website/*") : filesha1(f) if !(f == "../website/__pycache__" || f == "../website/recording.wav")]))
   }
 }

@@ -37,10 +37,12 @@ resource "aws_iam_policy" "ec2_ecr_s3_access_policy" {
           "ecr:BatchCheckLayerAvailability"
         ],
         Effect   = "Allow",
-        Resource = "arn:aws:ecr:region:account-id:repository/repository-name"
+        Resource = aws_ecr_repository.cloud-resume.arn
       }
     ]
   })
+
+  depends_on = [ aws_ecr_repository.cloud-resume ]
 }
 
 # Attach the policy to the role
@@ -51,6 +53,6 @@ resource "aws_iam_role_policy_attachment" "ec2_s3_attach" {
 
 # Create the EC2 instance profile
 resource "aws_iam_instance_profile" "ec2_s3_instance_profile" {
-  name = "EC2S3InstanceProfile"
+  name = "EC2InstanceProfile"
   role = aws_iam_role.ec2_s3_access_role.name
 }
