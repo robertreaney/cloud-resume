@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  web:
+    image: ${DOCKER_IMAGE_NAME}
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=app
+    command: >
+      sh -c "echo Running in Production &&
+            gunicorn --bind 0.0.0.0:5000 app:app"
