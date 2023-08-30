@@ -5,7 +5,7 @@
 1. ssh keygen in `~/.ssh`
 ```ssh-keygen -t rsa -b 4096```
 2. terraform apply
-3. `ssh -i ~/.ssh/id_rsa ubuntu@ec2_public_key`
+3. `ssh -i ~/.ssh/id_rsa ubuntu@52.54.162.179 -o StrictHostKeyChecking=no`
 4. Set environment variables AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 5. run `ec2_startup.sh`
 6. startup the container with `sudo docker run -it -p 80:5000 container_image_name /bin/bash`

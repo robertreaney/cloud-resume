@@ -40,8 +40,8 @@ resource "aws_iam_policy" "ec2_ecr_s3_access_policy" {
         Resource = aws_ecr_repository.cloud-resume.arn
       },
       {
-        Action    = "ecr:GetAuthorizationToken",
-        Effect    = "Allow",
+        Action   = "ecr:GetAuthorizationToken",
+        Effect   = "Allow",
         Resource = "*"
       }
     ]
