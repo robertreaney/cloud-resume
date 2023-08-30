@@ -1,6 +1,10 @@
-from flask import Flask, request, send_file
-from aws_s3 import AWSS3
-from audio import Audio
+from flask import Flask, request, send_file, jsonify
+try:
+    from .utils.aws_s3 import AWSS3
+    from .utils.audio import Audio
+except:
+    from utils.aws_s3 import AWSS3
+    from utils.audio import Audio
 import logging
 
 app = Flask(__name__)
@@ -33,6 +37,11 @@ def playback():
 @app.route('/audio', methods=['GET'])
 def get_audio():
     return send_file('recording.wav')
+
+@app.route('/test')
+def test():
+    return {'status': 'working!'}
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

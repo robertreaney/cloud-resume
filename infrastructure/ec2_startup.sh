@@ -37,4 +37,4 @@ sudo docker run --name website-server -d -p 443:5000 ${DOCKER_IMAGE_NAME}
 # sudo docker run --name website-server -d -p 443:5000 293245919051.dkr.ecr.us-east-1.amazonaws.com/cloud-resume
 
 # save image name for debuggin
-echo "export DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME}" >> /home/ubuntu/.bashrc
+echo "${DOCKER_IMAGE_NAME}" >> /DOCKER_IMAGE_NAME.log

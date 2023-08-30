@@ -11,3 +11,9 @@
 6. startup the container with `sudo docker run -it -p 80:5000 container_image_name /bin/bash`
 7. inside the container start the web server `gunicorn --bind 0.0.0.0:5000 app:app`
 8. go to your devbox and goto ec2_public_ip:80
+
+# Developer Mode
+
+0. Configure AWS CLI as your credentials will be shared with the local services.
+1. `docker compose up --build`
+    - `Ctrl+Shift+B` in VSCode works as shortcut
