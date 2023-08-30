@@ -32,9 +32,7 @@ resource "aws_iam_policy" "ec2_ecr_s3_access_policy" {
       },
       {
         Action = [
-          "ecr:GetDownloadUrlForLayer",
-          "ecr:BatchGetImage",
-          "ecr:BatchCheckLayerAvailability"
+          "ecr:*"
         ],
         Effect   = "Allow",
         Resource = aws_ecr_repository.cloud-resume.arn

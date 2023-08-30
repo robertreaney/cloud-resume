@@ -8,7 +8,12 @@ output "docker_image" {
   value       = docker_registry_image.website.name
 }
 
+output "nginx_image" {
+  description = "Nginx docker image name."
+  value       = docker_registry_image.nginx.name
+}
+
 output "website_server" {
   description = "public ip4"
-  value       = aws_instance.website_server.public_ip
+  value       = aws_eip.website_server.public_ip
 }

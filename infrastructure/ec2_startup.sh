@@ -1,6 +1,6 @@
 #!/bin/bash
 # setup
-touch /startup-test-proof.log
+touch /startup-test-further-proof.log
 sudo usermod -aG docker ubuntu
 
 sudo apt-get update
@@ -26,23 +26,16 @@ sudo apt-get install -y awscli
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 aws ecr get-login-password --region us-east-1 | sudo docker login -u AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
 
-# # get environment variables from s3
-# aws s3 cp s3://reaney-server-storage/docker_image_name.txt docker_image_name.txt
-# DOCKER_IMAGE_NAME=$(cat docker_image_name.txt)
-# export DOCKER_IMAGE_NAME
-echo "${DOCKER_IMAGE_NAME}" >> ~/DOCKER_IMAGE_NAME.log
+# save these variable names for debugging purposes
+echo ${WEBSITE_IMAGE_NAME} >> ~/WEBSITE_IMAGE_NAME.log
+echo ${NGINX_IMAGE_NAME} >> ~/NGINX_IMAGE_NAME.log
 
 # get docker compose from s3
-aws s3 cp s3://reaney-server-storage/docker-compose.prod.yml ~/docker-compose.prod.yml
+aws s3 cp s3://reaney-server-storage/docker-compose.prod.yml /hom/ubuntu/docker-compose.prod.yml
 
 # launch application
-sudo docker compose -f ~/docker-compose.prod.yml up
+sudo -E docker compose -f /home/ubuntu/docker-compose.prod.yml up
 
-
-# # pull the website image
-# sudo docker pull ${DOCKER_IMAGE_NAME}
-# # start the application
-# sudo docker run --name website-server -d -p 443:5000 ${DOCKER_IMAGE_NAME}
 
 # sudo docker pull 293245919051.dkr.ecr.us-east-1.amazonaws.com/cloud-resume
 # sudo docker run --name website-server -d -p 443:5000 293245919051.dkr.ecr.us-east-1.amazonaws.com/cloud-resume

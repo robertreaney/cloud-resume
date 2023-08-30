@@ -28,7 +28,7 @@ resource "aws_ecr_lifecycle_policy" "ecr_lifecycle_policy" {
   })
 }
 
-# build images
+# build  website image
 resource "docker_image" "website" {
   name     = "${aws_ecr_repository.cloud-resume.repository_url}:latest"
   platform = "linux"
@@ -48,5 +48,28 @@ resource "docker_registry_image" "website" {
   name = docker_image.website.name
   triggers = {
     dir_sha1 = sha1(join("", [for f in fileset(path.module, "../website/*") : filesha1(f) if !(f == "../website/__pycache__" || f == "../website/recording.wav")]))
+  }
+}
+
+# build nginx image
+resource "docker_image" "nginx" {
+  name     = "${aws_ecr_repository.cloud-resume.repository_url}:nginx"
+  platform = "linux"
+
+  build {
+    context = "../services/nginx"
+    tag     = ["${aws_ecr_repository.cloud-resume.repository_url}:nginx"]
+  }
+
+  triggers = {
+    dir_sha1 = sha1(join("", [for f in fileset(path.module, "../services/nginx/*") : filesha1(f)]))
+  }
+}
+
+# push image
+resource "docker_registry_image" "nginx" {
+  name = docker_image.nginx.name
+  triggers = {
+    dir_sha1 = sha1(join("", [for f in fileset(path.module, "../services/nginx/*") : filesha1(f)]))
   }
 }

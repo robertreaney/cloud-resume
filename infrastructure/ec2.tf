@@ -50,7 +50,7 @@ resource "aws_instance" "website_server" {
   # user_data = replace(file("${path.module}/ec2_startup.sh"), "DOCKER_IMAGE_NAME", docker_registry_image.website.name)
   user_data = data.template_file.ec2-startup.rendered
 
-  depends_on = [docker_registry_image.website, aws_s3_object.docker_compose]
+  depends_on = [docker_registry_image.website, docker_registry_image.nginx, aws_s3_object.docker_compose]
 
   tags = {
     Name = "WebsiteServer"
@@ -74,7 +74,7 @@ resource "aws_s3_bucket" "website_bucket" {
 resource "aws_s3_object" "docker_compose" {
   bucket = aws_s3_bucket.website_bucket.id
   key    = "docker-compose.prod.yml"
-  source = "docker-compose.prod.yml"  # Path to your updated file
+  source = "../docker-compose.prod.yml" # Path to your updated file
 }
 
 # resource "aws_s3_object" "image_name" {

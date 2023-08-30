@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+
+  web:
+    image: ${WEBSITE_IMAGE_NAME}
+    container_name: web-server
+    expose:
+      - 5000
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=app
+    networks:
+      - nginx_network
+    command: >
+      sh -c "echo Running in Production &&
+            gunicorn --bind 0.0.0.0:5000 app:app"
+
+  nginx:
+    image: ${NGINX_IMAGE_NAME}
+    container_name: nginx-server
+    ports:
+      - 5000:80
+    networks:
+      - nginx_network
+    depends_on:
+      - web
+
+networks:
+  nginx_network:
+    driver: bridge
