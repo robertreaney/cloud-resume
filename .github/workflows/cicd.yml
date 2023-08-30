@@ -48,4 +48,4 @@ jobs:
           role-session-name: githubActions
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
       - name: Update s3
-        run: python pipeline.py
+        run: python scripts/upload_to_s3.py

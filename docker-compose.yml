@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  web:
+    build:
+      context: ./website
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=app
+    volumes:
+      - ~/.aws:/root/.aws:ro
+      # - website:/wd
+    command: >
+      sh -c "echo Running in Development &&
+            flask run --host=0.0.0.0"
