@@ -32,7 +32,7 @@ services:
       # - ./services/nginx/conf.d:/etc/nginx/conf.d:ro
       - ./website/static:/static:ro
       - ./.log/nginx:/var/log/nginx
-      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/www/:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/letsencrypt/:rw
     networks:
       - nginx_network
@@ -40,9 +40,10 @@ services:
       - web
   
   certbot:
+    container_name: certbot-server
     image: certbot/certbot:latest
     volumes: 
-      - ./certbot/www:/var/www/certbot/:rw
+      - ./certbot/www/:/var/www/certbot/:rw
       - ./certbot/conf/:/etc/letsencrypt/:rw
 
 
