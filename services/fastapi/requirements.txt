@@ -1,0 +1,6 @@
+boto3
+uvicorn
+fastapi
+python-multipart
+flask
+gunicorn

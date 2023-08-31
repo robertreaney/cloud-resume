@@ -1,4 +1,5 @@
 import wave
+# import pyaudio
 
 class Audio:
     def record(self, data):
@@ -19,4 +20,7 @@ class Audio:
         except Exception as e:
             print(f"Other Error: {e}")
             return -1
+        
+    # def playback(self, file_name):
+
 

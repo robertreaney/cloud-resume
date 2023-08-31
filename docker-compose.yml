@@ -14,4 +14,4 @@ services:
       # - website:/wd
     command: >
       sh -c "echo Running in Development &&
-            flask run --host=0.0.0.0"
+            uvicorn main:app --reload"
