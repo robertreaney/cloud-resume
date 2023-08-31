@@ -6,11 +6,17 @@ except:
     from utils.aws_s3 import AWSS3
     from utils.audio import Audio
 import logging
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
 s3 = AWSS3()
 audio = Audio()
 logging.basicConfig(level=logging.INFO)
+
+app.wsgi_app = ProxyFix(
+    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+)
+
 
 @app.route('/')
 def index():

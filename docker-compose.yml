@@ -1,17 +1,40 @@
 version: "3.8"
 services:
   web:
+    container_name: flask
     build:
       context: ./website
       dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
+    expose:
+      - 8000
     environment:
       - FLASK_ENV=development
       - FLASK_APP=app
     volumes:
       - ~/.aws:/root/.aws:ro
-      # - website:/wd
+      - ./website:/wd
+      - ./.log/website:/var/log/website
+    networks:
+      - nginx_network
     command: >
       sh -c "echo Running in Development &&
-            flask run --host=0.0.0.0"
+            gunicorn --bind 0.0.0.0:8000 app:app > /var/log/website/gunicorn.log 2>&1"
+
+  nginx:
+    # build: "services/nginx"
+    image: nginx
+    container_name: nginx-server
+    ports:
+      - 80:80
+    volumes:
+      - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # - ./services/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./website/static:/static:ro
+      - ./.log/nginx:/var/log/nginx
+    networks:
+      - nginx_network
+    depends_on:
+      - web
+
+networks:
+  nginx_network:
