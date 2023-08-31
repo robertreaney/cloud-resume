@@ -3,7 +3,7 @@ services:
   web:
     container_name: flask
     build:
-      context: ./website
+      context: ./services/website
       dockerfile: Dockerfile
     expose:
       - 8000
@@ -12,8 +12,8 @@ services:
       - FLASK_APP=app
     volumes:
       - ~/.aws:/root/.aws:ro
-      - ./website:/wd
-      - ./.log/website:/var/log/website
+      - ./services/website:/wd
+      - ./.log/services/website:/var/log/website
     networks:
       - nginx_network
     command: >
@@ -21,7 +21,6 @@ services:
             gunicorn --bind 0.0.0.0:8000 app:app > /var/log/website/gunicorn.log 2>&1"
 
   nginx:
-    # build: "services/nginx"
     image: nginx
     container_name: nginx-server
     ports:
@@ -30,7 +29,7 @@ services:
     volumes:
       - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       # - ./services/nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./website/static:/static:ro
+      - ./services/website/static:/static:ro
       - ./.log/nginx:/var/log/nginx
       - ./certbot/www/:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/letsencrypt/:rw

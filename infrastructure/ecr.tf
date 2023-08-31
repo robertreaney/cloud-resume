@@ -34,12 +34,12 @@ resource "docker_image" "website" {
   platform = "linux"
 
   build {
-    context = "../website"
+    context = "../services/website"
     tag     = ["${aws_ecr_repository.cloud-resume.repository_url}:latest"]
   }
 
   triggers = {
-    dir_sha1 = sha1(join("", [for f in fileset(path.module, "../website/*") : filesha1(f) if !(f == "../website/__pycache__" || f == "../website/recording.wav")]))
+    dir_sha1 = sha1(join("", [for f in fileset(path.module, "../services/website/*") : filesha1(f) if !(f == "../services/website/__pycache__" || f == "../services/website/recording.wav")]))
   }
 }
 
@@ -47,6 +47,6 @@ resource "docker_image" "website" {
 resource "docker_registry_image" "website" {
   name = docker_image.website.name
   triggers = {
-    dir_sha1 = sha1(join("", [for f in fileset(path.module, "../website/*") : filesha1(f) if !(f == "../website/__pycache__" || f == "../website/recording.wav")]))
+    dir_sha1 = sha1(join("", [for f in fileset(path.module, "../services/website/*") : filesha1(f) if !(f == "../services/website/__pycache__" || f == "../services/website/recording.wav")]))
   }
 }
