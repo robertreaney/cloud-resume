@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  web:
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=app
+
+  nginx:
+    volumes:
+      - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # - ./services/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./services/website/static:/static:ro
+      - ./.log/nginx:/var/log/nginx
+      - ./certbot/www/:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/letsencrypt/:rw
+  
+  certbot:
+    container_name: certbot-server
+    image: certbot/certbot:latest
+    volumes: 
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
