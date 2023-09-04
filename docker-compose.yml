@@ -13,7 +13,7 @@ services:
     volumes:
       - ~/.aws:/root/.aws:ro
       - ./services/website:/wd
-      - ./.log/services/website:/var/log/website
+      - ./.log/website:/var/log/website
     networks:
       - nginx_network
     command: >

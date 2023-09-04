@@ -6,7 +6,7 @@ date +"%Y-%m-%d %H:%M:%S" > ~/refresh-proof.log
 cd cloud-resume
 git pull
 docker compose down
-docker compose up --build
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 '@
 
 $sshArgs = @(
