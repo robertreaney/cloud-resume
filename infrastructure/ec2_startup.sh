@@ -1,10 +1,10 @@
 #!/bin/bash
 # setup
-touch /startup-test-proof.log
+date +"%Y-%m-%d %H:%M:%S" > /startup-test-proof.log
 sudo usermod -aG docker ubuntu
 
 sudo apt-get update
-sudo apt-get install -y ca-certificates curl gnupg
+sudo apt-get install -y ca-certificates curl gnupg git
 # docker official GPG key
 sudo install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
@@ -26,17 +26,20 @@ sudo apt-get install -y awscli
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 aws ecr get-login-password --region us-east-1 | sudo docker login -u AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
 
+git clone https://github.com/robertreaney/cloud-resume.git
+
+
 # # get environment variables from s3
 # aws s3 cp s3://reaney-server-storage/docker_image_name.txt docker_image_name.txt
 # DOCKER_IMAGE_NAME=$(cat docker_image_name.txt)
 # export DOCKER_IMAGE_NAME
-echo "${DOCKER_IMAGE_NAME}" >> ~/DOCKER_IMAGE_NAME.log
+# echo "${DOCKER_IMAGE_NAME}" >> ~/DOCKER_IMAGE_NAME.log
 
 # get docker compose from s3
-aws s3 cp s3://reaney-server-storage/docker-compose.prod.yml ~/docker-compose.prod.yml
+# aws s3 cp s3://reaney-server-storage/docker-compose.prod.yml ~/docker-compose.prod.yml
 
 # launch application
-sudo docker compose -f ~/docker-compose.prod.yml up
+# sudo docker compose -f ~/docker-compose.prod.yml up
 
 
 # # pull the website image

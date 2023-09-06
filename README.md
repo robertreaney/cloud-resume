@@ -17,3 +17,6 @@
 0. Configure AWS CLI as your credentials will be shared with the local services.
 1. `docker compose up --build`
     - `Ctrl+Shift+B` in VSCode works as shortcut
+
+2. Make certification
+    `sudo docker compose -f docker-compose.yml -f docker-compose.prod.yml run --rm certbot certonly -v --webroot --webroot-path /var/www/certbot --dry-run -d robertreaney.com`
