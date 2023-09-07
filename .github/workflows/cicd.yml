@@ -37,5 +37,6 @@ jobs:
           mkdir -p ~/.ssh
           echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          chmod +x ./scripts/refresh-ec2.sh
           ./scripts/refresh-ec2.sh
           rm  ~/.ssh/id_rsa
