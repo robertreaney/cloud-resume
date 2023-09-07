@@ -4,7 +4,7 @@ This is a work in progress repository to display data science and machine learni
 
 # Status
 
-Currently prod has a prototype resume scaffolding with sections and buttons for the ASR chat-gpt plugin. I have almost figured out https for prod to give access to visitor's microphone. In dev I have the basics of ASR/chatgpt setup to start that speech-to-gpt service. I need to clean up some of the file communications and put the asr model (whisper) into lambda to avoid a huge EC2 bill.
+Currently prod has a prototype resume scaffolding with sections and buttons for the ASR chat-gpt plugin. I have almost figured out https for prod to give access to visitor's microphone. In dev I have the basics of ASR/chatgpt setup to start that speech-to-gpt service. I need to clean up some of the file communications as it is just working with a "smoke test" right now. Also I need to put the asr model (whisper) into lambda to avoid a huge EC2 bill.
 
 # Production
 
