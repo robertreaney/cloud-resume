@@ -33,19 +33,10 @@ jobs:
         with:
           python-version: '3.9.16'
           cache: 'pip'
-      # - name: Cache Pip
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: ~/.cache/pip
-      #     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-pip-
-      - run: pip install -r requirements.txt
-      - name: AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          role-session-name: githubActions
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: Update s3
-        run: python scripts/upload_to_s3.py
+      - name: Update EC2 Files
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          HOST: 52.54.162.179
+          USER: ubuntu
+        run: |
+          ssh -i <(echo "$PRIVATE_KEY") -o StrictHostKeyChecking=no $USER@$HOST "./scripts/refresh-ec2.sh"
