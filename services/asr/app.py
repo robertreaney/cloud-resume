@@ -20,12 +20,12 @@ model = whisper.load_model(model_name)
 def asr():
     audio_file = request.files.get('audio')
     result = model.transcribe(audio_file)
-    return result['text']
+    return {'text': result['text']}
 
 @app.route('/smoke', methods=['GET'])
 def smoke():
     result = model.transcribe('recording.wav')
-    return result['text']
+    return {'text': result['text']}
 
 @app.route('/test')
 def test():

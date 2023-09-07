@@ -61,12 +61,12 @@ document.getElementById('record').addEventListener('click', function() {
         });
 });
 
-document.getElementById('playback').addEventListener('click', function() {
-    fetch('/playback')
+document.getElementById('translate').addEventListener('click', function() {
+    fetch('/whisper/smoke')
         .then(response => response.json())
         .then(data => {
-            document.getElementById('status').textContent = 'Playback length: ' + data.length + ' seconds';
-            playRecordedAudio();
+            document.getElementById('status').textContent = data.text;
+            // playRecordedAudio();
         });
 });
 
