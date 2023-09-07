@@ -35,6 +35,36 @@ services:
       - nginx_network
     depends_on:
       - web
-  
+
+  whisper:
+    container_name: whisper-server
+    build:
+      context: ./services/asr
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    env_file:
+      - .env
+    environment:
+      - ASR_MODEL=tiny.en
+      - FLASK_ENV=development
+      - FLASK_APP=app
+    expose:
+      - 9000
+    volumes:
+      - ./.log/whisper:/var/log/whisper
+      - ./.cache/cache-whisper:/root/.cache/whisper
+    networks:
+      - nginx_network
+    command: >
+      sh -c "echo Running in Development &&
+            gunicorn --bind 0.0.0.0:9000 app:app > /var/log/whisper/gunicorn.log 2>&1"
+
+
 networks:
   nginx_network:

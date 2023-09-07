@@ -4,3 +4,5 @@ workspace
 .terraform*
 .pem
 .log
+.cache
+.env
