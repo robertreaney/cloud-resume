@@ -2,6 +2,7 @@ from flask import Flask, request, send_file, jsonify
 import logging
 import os
 import whisper
+import openai
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 # overhead
@@ -25,7 +26,10 @@ def asr():
 @app.route('/smoke', methods=['GET'])
 def smoke():
     result = model.transcribe('recording.wav')
-    return {'text': result['text']}
+    chat_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "user", "content": result['text']}])
+
+    # return {'text': result['text']}
+    return {'text': 'Input:\n\n'+ result['text'] + '\n\nOutput:\n\n' + chat_completion.choices[0].message.content}
 
 @app.route('/test')
 def test():

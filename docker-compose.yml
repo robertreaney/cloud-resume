@@ -48,6 +48,8 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+    env_file:
+      - .env
     environment:
       - ASR_MODEL=tiny.en
       - FLASK_ENV=development

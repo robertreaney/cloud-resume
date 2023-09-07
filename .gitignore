@@ -5,3 +5,4 @@ workspace
 .pem
 .log
 .cache
+.env
