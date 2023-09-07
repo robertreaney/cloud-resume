@@ -62,7 +62,8 @@ document.getElementById('record').addEventListener('click', function() {
 });
 
 document.getElementById('translate').addEventListener('click', function() {
-    fetch('/whisper/smoke')
+    document.getElementById('status').textContent = 'Processing your request...';
+    fetch('/translate_hf')
         .then(response => response.json())
         .then(data => {
             document.getElementById('status').textContent = data.text;

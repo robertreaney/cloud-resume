@@ -1,4 +1,8 @@
 from flask import Flask, request, send_file, jsonify
+import os
+import requests
+import openai
+
 try:
     from .utils.aws_s3 import AWSS3
     from .utils.audio import Audio
@@ -18,35 +22,55 @@ app.wsgi_app = ProxyFix(
 )
 
 
+
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
 
 @app.route('/record', methods=['POST'])
 def record():
+    user_ip = request.remote_addr
     audio_file = request.files.get('audio')
     logging.info(f'saved record for {audio_file}')
     if audio_file:
-        audio_file.save('recording.wav')
-        s3.upload_file('recording.wav', 'asr/recording.wav')
+        audio_file.save(f'{user_ip}_recording.wav')
+        # s3.upload_file(f'{user_ip}_recording.wav', f'asr/{user_ip}_recording.wav')
         return '', 200
     else:
         return 'No audio file found', 400
 
-@app.route('/playback', methods=['GET'])
-def playback():
-    logging.info('playing back audio file.')
-    s3.download_file('asr/recording.wav', 'recording.wav')
-    length = audio.get_length('recording.wav')
-    return {'length': length}, 200
+# @app.route('/playback', methods=['GET'])
+# def playback():
+#     logging.info('playing back audio file.')
+#     s3.download_file('asr/recording.wav', 'recording.wav')
+#     length = audio.get_length('recording.wav')
+#     return {'length': length}, 200
 
 @app.route('/audio', methods=['GET'])
 def get_audio():
-    return send_file('recording.wav')
+    user_ip = request.remote_addr
+    return send_file(f'{user_ip}_recording.wav')
 
 @app.route('/test')
 def test():
-    return {'status': 'working!'}
+    user_ip = request.remote_addr
+    return {'status': f'Welcome user {user_ip}!'}
+
+@app.route('/translate_hf')
+def translate_hf():
+    user_ip = request.remote_addr
+    logging.info(f'translate requested by user_ip={user_ip}')
+    with open(f'{user_ip}_recording.wav', "rb") as f:
+        data = f.read()
+    headers = {"Authorization": f"Bearer {os.getenv('HF_API_KEY')}"}
+    url = "https://api-inference.huggingface.co/models/openai/whisper-tiny.en"
+    response = requests.post(url, headers=headers, data=data)
+    result = response.json()
+    logging.info(f'HF translate result={result}')
+    chat_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "user", "content": result['text']}])
+
+    return {'text': 'Input:\n\n'+ result['text'] + '\n\nOutput:\n\n' + chat_completion.choices[0].message.content}
+
 
 
 if __name__ == '__main__':
