@@ -5,6 +5,7 @@ ssh -v -i ~/.ssh/id_rsa ubuntu@52.54.162.179 -o StrictHostKeyChecking=no "bash -
 
 date +"%Y-%m-%d %H:%M:%S" > ~/refresh-proof.log
 cd cloud-resume
+git checkout main
 git pull
 sudo docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 EOF
