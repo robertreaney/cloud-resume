@@ -7,6 +7,5 @@ date +"%Y-%m-%d %H:%M:%S" > ~/refresh-proof.log
 cd cloud-resume
 git checkout main
 git pull
-# sudo docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
-sudo docker compose up --build -d
+sudo docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 EOF
