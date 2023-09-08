@@ -1,42 +1,42 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: CD
 
 # Controls when the workflow will run
-on: [push]
-# on:
-#   push:
-#     branches: [ "main" ]
-#   pull_request:
-#     branches: [ "main" ]
-#   workflow_dispatch:
+on:
+  push:
+    branches: [ "main", "cd" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
 
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read  # This is required for actions/checkout
 
 env:
-    # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     AWS_DEFAULT_REGION: 'us-east-1'
 
 jobs:
   deploy-website:
-    name: Deploy Website to s3
+    name: Deploy Website
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Deps
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9.16'
-          cache: 'pip'
       - name: Update EC2 Files
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          HOST: 52.54.162.179
-          USER: ubuntu
         run: |
-          ssh -i <(echo "$PRIVATE_KEY") -o StrictHostKeyChecking=no $USER@$HOST "./scripts/refresh-ec2.sh"
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          chmod +x ./scripts/refresh-ec2.sh
+          ./scripts/refresh-ec2.sh
+          rm  ~/.ssh/id_rsa
+        continue-on-error: true
+      - name: Troubleshoot
+        run: |
+          openssl version
+          sudo tail -n 20 /var/log/auth.log
