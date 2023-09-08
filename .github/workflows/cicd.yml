@@ -38,4 +38,5 @@ jobs:
         continue-on-error: true
       - name: Troubleshoot
         run: |
+          openssl version
           sudo tail -n 20 /var/log/auth.log
