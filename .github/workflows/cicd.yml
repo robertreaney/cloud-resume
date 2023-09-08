@@ -38,4 +38,4 @@ jobs:
         continue-on-error: true
       - name: Troubleshoot
         run: |
-          sudo tail -f /var/log/auth.log
+          sudo tail -n 20 /var/log/auth.log
