@@ -25,11 +25,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Deps
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9.16'
-          cache: 'pip'
       - name: Update EC2 Files
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
