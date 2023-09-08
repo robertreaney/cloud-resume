@@ -40,3 +40,7 @@ jobs:
           chmod +x ./scripts/refresh-ec2.sh
           ./scripts/refresh-ec2.sh
           rm  ~/.ssh/id_rsa
+        continue-on-error: true
+      - name: Troubleshoot
+        run: |
+          sudo tail -f /var/log/auth.log
