@@ -1,5 +1,5 @@
 $sshKeyPath = "$env:USERPROFILE\.ssh\id_rsa"
-$remoteHost = "52.54.162.179"
+$remoteHost = "3.82.255.107"
 $remoteUser = "ubuntu"
 $remoteScript = @'
 date +"%Y-%m-%d %H:%M:%S" > ~/refresh-proof.log
