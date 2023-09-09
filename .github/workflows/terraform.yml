@@ -18,7 +18,7 @@ concurrency:
     cancel-in-progress: true
 
 env:
-    AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     TERRAFORM_VERSION: 5.13.1
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
