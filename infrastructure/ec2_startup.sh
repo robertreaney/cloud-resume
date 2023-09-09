@@ -34,7 +34,7 @@ git clone https://github.com/robertreaney/cloud-resume.git
 
 # launch application
 # sudo docker compose -f ~/docker-compose.prod.yml up
-
+sudo docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d --remove-orphans
 
 # sudo docker pull 293245919051.dkr.ecr.us-east-1.amazonaws.com/cloud-resume
 # sudo docker run --name website-server -d -p 443:5000 293245919051.dkr.ecr.us-east-1.amazonaws.com/cloud-resume
