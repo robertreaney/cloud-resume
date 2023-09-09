@@ -42,7 +42,7 @@ resource "aws_security_group" "website_server_sg" {
 
 resource "aws_instance" "website_server" {
   ami                    = "ami-053b0d53c279acc90"
-  instance_type          = "t4g.nano"
+  instance_type          = "t3a.nano"
   iam_instance_profile   = aws_iam_instance_profile.ec2_s3_instance_profile.name
   key_name               = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_security_group.website_server_sg.id]
@@ -50,7 +50,7 @@ resource "aws_instance" "website_server" {
   # user_data = replace(file("${path.module}/ec2_startup.sh"), "DOCKER_IMAGE_NAME", docker_registry_image.website.name)
   user_data = data.template_file.ec2-startup.rendered
 
-  depends_on = [docker_registry_image.website, aws_s3_object.docker_compose]
+  # depends_on = [docker_registry_image.website, aws_s3_object.docker_compose]
 
   tags = {
     Name = "WebsiteServer"
@@ -70,15 +70,3 @@ resource "aws_eip" "website_server" {
 resource "aws_s3_bucket" "website_bucket" {
   bucket = "reaney-server-storage"
 }
-
-resource "aws_s3_object" "docker_compose" {
-  bucket = aws_s3_bucket.website_bucket.id
-  key    = "docker-compose.prod.yml"
-  source = "docker-compose.prod.yml"  # Path to your updated file
-}
-
-# resource "aws_s3_object" "image_name" {
-#   bucket = aws_s3_bucket.website_bucket.id
-#   key    = "docker_image_name.txt"
-#   content = docker_registry_image.website.name
-# }
