@@ -28,26 +28,4 @@ sudo apt-get install -y awscli
 
 git clone https://github.com/robertreaney/cloud-resume.git
 
-
-# # get environment variables from s3
-# aws s3 cp s3://reaney-server-storage/docker_image_name.txt docker_image_name.txt
-# DOCKER_IMAGE_NAME=$(cat docker_image_name.txt)
-# export DOCKER_IMAGE_NAME
-# echo "${DOCKER_IMAGE_NAME}" >> ~/DOCKER_IMAGE_NAME.log
-
-# get docker compose from s3
-# aws s3 cp s3://reaney-server-storage/docker-compose.prod.yml ~/docker-compose.prod.yml
-
-# launch application
-# sudo docker compose -f ~/docker-compose.prod.yml up
-
-
-# # pull the website image
-# sudo docker pull ${DOCKER_IMAGE_NAME}
-# # start the application
-# sudo docker run --name website-server -d -p 443:5000 ${DOCKER_IMAGE_NAME}
-
-# sudo docker pull 293245919051.dkr.ecr.us-east-1.amazonaws.com/cloud-resume
-# sudo docker run --name website-server -d -p 443:5000 293245919051.dkr.ecr.us-east-1.amazonaws.com/cloud-resume
-
-# save image name for debuggin
+sudo docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d --remove-orphans
