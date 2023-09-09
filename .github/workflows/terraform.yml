@@ -41,16 +41,20 @@ jobs:
               id: fmt
               run: terraform fmt -check
 
-            - name: Terraform Init
-              id: init
-              run: terraform init
-
-            - name: Make Public Key
+            - name: Make Public Key Files
               run: |
                 mkdir -p ~/.ssh
                 echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa.pub
                 chmod 600 ~/.ssh/id_rsa.pub
+                mkdir -p ~/.aws
+                echo "[default]" > "~/.aws/credentials"
+                echo "aws_access_key_id = ${AWS_ACCESS_KEY_ID}" >> "~/.aws/credentials"
+                echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> "~/.aws/credentials"
 
+            - name: Terraform Init
+              id: init
+              run: terraform init
+                
             - name: Terraform Validate
               id: validate
               run: terraform validate -no-color
@@ -102,15 +106,19 @@ jobs:
               id: fmt
               run: terraform fmt -check
 
-            - name: Init
-              id: init
-              run: terraform init
-
-            - name: Make Public Key
+            - name: Make Public Key Files
               run: |
                 mkdir -p ~/.ssh
                 echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa.pub
                 chmod 600 ~/.ssh/id_rsa.pub
+                mkdir -p ~/.aws
+                echo "[default]" > "~/.aws/credentials"
+                echo "aws_access_key_id = ${AWS_ACCESS_KEY_ID}" >> "~/.aws/credentials"
+                echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> "~/.aws/credentials"
+
+            - name: Init
+              id: init
+              run: terraform init
 
             - name: Validate
               id: validate
