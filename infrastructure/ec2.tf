@@ -69,9 +69,9 @@ resource "aws_eip" "website_server" {
 # domain name registration
 resource "aws_route53_record" "www" {
   zone_id = aws_route53_zone.primary.zone_id
-  name = "www.robertreaney.com"
-  type = "A"
-  ttl = 300
+  name    = "www.robertreaney.com"
+  type    = "A"
+  ttl     = 300
   records = [aws_instance.website_server.public_ip]
 }
 
