@@ -47,9 +47,9 @@ jobs:
                 echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa.pub
                 chmod 600 ~/.ssh/id_rsa.pub
                 mkdir -p ~/.aws
-                echo "[default]" > "~/.aws/credentials"
-                echo "aws_access_key_id = ${AWS_ACCESS_KEY_ID}" >> "~/.aws/credentials"
-                echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> "~/.aws/credentials"
+                echo "[default]" >> ~/.aws/credentials
+                echo "aws_access_key_id = $AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
+                echo "aws_secret_access_key = $AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
 
             - name: Terraform Init
               id: init
@@ -112,9 +112,9 @@ jobs:
                 echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa.pub
                 chmod 600 ~/.ssh/id_rsa.pub
                 mkdir -p ~/.aws
-                echo "[default]" > "~/.aws/credentials"
-                echo "aws_access_key_id = ${AWS_ACCESS_KEY_ID}" >> "~/.aws/credentials"
-                echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> "~/.aws/credentials"
+                echo "[default]" >> ~/.aws/credentials
+                echo "aws_access_key_id = $AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
+                echo "aws_secret_access_key = $AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
 
             - name: Init
               id: init
