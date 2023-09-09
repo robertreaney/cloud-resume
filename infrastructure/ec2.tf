@@ -66,6 +66,20 @@ resource "aws_eip" "website_server" {
   }
 }
 
+# route 53 zone
+resource "aws_route53_zone" "primary" {
+  name = "robertreaney.com"
+}
+
+# domain name registration
+resource "aws_route53_record" "www" {
+  zone_id = aws_route53_zone.primary.zone_id
+  name    = "www.robertreaney.com"
+  type    = "A"
+  ttl     = 300
+  records = [aws_instance.website_server.public_ip]
+}
+
 # storage for our instance
 resource "aws_s3_bucket" "website_bucket" {
   bucket = "reaney-server-storage"

@@ -15,10 +15,10 @@ services:
       - ./.log/certbot/conf/:/etc/letsencrypt/:rw
     restart: always
   
-  # certbot:
-  #   container_name: certbot-server
-  #   image: certbot/certbot:latest
-  #   volumes: 
-  #     - ./.log/certbot/www/:/var/www/certbot/:rw
-  #     - ./.log/certbot/conf/:/etc/letsencrypt/:rw
-  #   restart: always
+  certbot:
+    container_name: certbot-server
+    image: certbot/certbot:latest
+    volumes: 
+      - ./.log/certbot/www/:/var/www/certbot/:rw
+      - ./.log/certbot/conf/:/etc/letsencrypt/:rw
+    restart: always

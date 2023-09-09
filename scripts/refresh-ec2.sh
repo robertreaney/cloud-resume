@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ssh -v -i ~/.ssh/id_rsa ubuntu@52.54.162.179 -o StrictHostKeyChecking=no "bash -s" << EOF
+ssh -v -i ~/.ssh/id_rsa ubuntu@3.82.255.107 -o StrictHostKeyChecking=no "bash -s" << EOF
 #!/bin/bash
 
 date +"%Y-%m-%d %H:%M:%S" > ~/refresh-proof.log
