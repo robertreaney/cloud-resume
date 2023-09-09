@@ -21,7 +21,7 @@ env:
     AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     TERRAFORM_VERSION: 5.13.1
-    SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+    SSH_PRIVATE_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
 
 jobs:
     build:
@@ -45,11 +45,11 @@ jobs:
               id: init
               run: terraform init
 
-            - name: Make Key
+            - name: Make Public Key
               run: |
                 mkdir -p ~/.ssh
-                echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-                chmod 600 ~/.ssh/id_rsa
+                echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa.pub
+                chmod 600 ~/.ssh/id_rsa.pub
 
             - name: Terraform Validate
               id: validate
@@ -106,11 +106,11 @@ jobs:
               id: init
               run: terraform init
 
-            - name: Make Key
+            - name: Make Public Key
               run: |
                 mkdir -p ~/.ssh
-                echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-                chmod 600 ~/.ssh/id_rsa
+                echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa.pub
+                chmod 600 ~/.ssh/id_rsa.pub
 
             - name: Validate
               id: validate
