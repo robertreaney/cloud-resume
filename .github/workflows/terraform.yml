@@ -1,0 +1,122 @@
+name: Terraform Infrastructure
+run-name: ${{ github.actor }}
+
+on:
+    workflow_dispatch:
+    push: 
+        branches: ["main", "iac"]
+    pull_request:
+        branches: [main]
+
+defaults:
+    run:
+        working-directory: infrastructure
+        shell: bash
+
+concurrency:
+    group: ci
+    cancel-in-progress: true
+
+env:
+    AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    TERRAFORM_VERSION: 5.13.1
+
+jobs:
+    build:
+        if: github.event_name == 'pull_request'
+        runs-on: ubuntu-latest
+        strategy:
+            max-parallel: 2
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Install TF
+              uses: hashicorp/setup-terraform@v2.0.0
+              with:
+                terraform_version: $TERRAFORM_VERSION
+            
+            - name: Check Formatting
+              id: fmt
+              run: terraform fmt -check
+
+            - name: Terraform Init
+              id: init
+              run: terraform init -backend-confg="bucket=$BACKEND_BUCKET"
+
+            - name: Terraform Validate
+              id: validate
+              run: terraform validate -no-color
+
+            - name: Terraform Plan
+              id: plan
+              run: terraform plan -no-color -input=false
+
+            - name: Update PR
+              uses: actions/github-script@v6.1.0
+              env:
+                PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+              with:
+                github-token: ${{ secrets.GITHUB_TOKEN }}
+                script: |
+                    const output - `### Terraform Format and style\`${{ steps.fmt.outcome}}\`
+                    #### Terraform Init \`${{ steps.init.outcome }}\`
+                    #### Terraform Plan \`${{ steps.plan.outcome }}\`
+                    #### Terraform Valid \`${{ steps.validate.outcome }}\`
+                    <details><summary>Show Plan</summary>
+                    \`\`\`\n
+                    ${process.env.PLAN}
+                    \`\`\`
+                    </details>
+                    *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+                    github.rest.issues.createComment({
+                        issue_number: context.issue.number,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        body: output
+                    })
+
+            - name: Status
+              if: steps.plan.outcome == 'failure'
+              run: exit 1
+            
+    release:
+        runs-on: ubuntu-latest
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/iac'
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Install TF
+              uses: hashicorp/setup-terraform@v2
+              with:
+                terraform_version: $TERRAFORM_VERSION
+
+            - name: Formatting
+              id: fmt
+              run: terraform fmt -check
+
+            - name: Init
+              id: init
+              run: terraform init -backend-confg="bucket=$BACKEND_BUCKET"
+
+            - name: Validate
+              id: validate
+              run: terraform validate -no-color
+
+            - name: Plan
+              id: plan
+              run: terraform plan -no-color -input=false
+              continue-on-error: true
+
+            - name: Status
+              if: steps.plan.outcome == 'failure'
+              run: exit 1
+
+            - name: Apply
+              id: apply
+              run: terraform apply -no-color -input=false --auto-approve
+              continue-on-error: true
+
+            - name: Outcome Status
+              if: steps.apply.outcome == 'failure'
+              run: exit 1
