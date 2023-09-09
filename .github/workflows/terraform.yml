@@ -42,7 +42,7 @@ jobs:
 
             - name: Terraform Init
               id: init
-              run: terraform init -backend-confg="bucket=$BACKEND_BUCKET"
+              run: terraform init
 
             - name: Terraform Validate
               id: validate
@@ -97,7 +97,7 @@ jobs:
 
             - name: Init
               id: init
-              run: terraform init -backend-confg="bucket=$BACKEND_BUCKET"
+              run: terraform init
 
             - name: Validate
               id: validate
