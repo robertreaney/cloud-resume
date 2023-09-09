@@ -5,19 +5,150 @@ name: CD
 # Controls when the workflow will run
 on:
   push:
-    branches: [ "main", "cd" ]
+    branches: [ "main", "iac", cd" ]
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
 
+concurrency:
+  group: ci
+  cancel-in-progress: true
+  
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read  # This is required for actions/checkout
 
+defaults:
+  run:
+      working-directory: infrastructure
+      shell: bash
+
 env:
     AWS_DEFAULT_REGION: 'us-east-1'
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    TERRAFORM_VERSION: 5.13.1
+    SSH_PRIVATE_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
 
 jobs:
+  build:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    strategy:
+        max-parallel: 2
+    steps:
+        - uses: actions/checkout@v3
+
+        - name: Install TF
+          uses: hashicorp/setup-terraform@v2.0.0
+          with:
+            terraform_version: $TERRAFORM_VERSION
+        
+        - name: Check Formatting
+          id: fmt
+          run: terraform fmt -check
+
+        - name: Make Public Key Files
+          run: |
+            mkdir -p ~/.ssh
+            echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa.pub
+            chmod 600 ~/.ssh/id_rsa.pub
+            mkdir -p ~/.aws
+            echo "[default]" >> ~/.aws/credentials
+            echo "aws_access_key_id = $AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
+            echo "aws_secret_access_key = $AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+
+        - name: Terraform Init
+          id: init
+          run: terraform init
+            
+        - name: Terraform Validate
+          id: validate
+          run: terraform validate -no-color
+
+        - name: Terraform Plan
+          id: plan
+          run: terraform plan -no-color -input=false
+
+        - name: Update PR
+          uses: actions/github-script@v6.1.0
+          env:
+            PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            script: |
+                const output - `### Terraform Format and style\`${{ steps.fmt.outcome}}\`
+                #### Terraform Init \`${{ steps.init.outcome }}\`
+                #### Terraform Plan \`${{ steps.plan.outcome }}\`
+                #### Terraform Valid \`${{ steps.validate.outcome }}\`
+                <details><summary>Show Plan</summary>
+                \`\`\`\n
+                ${process.env.PLAN}
+                \`\`\`
+                </details>
+                *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+                github.rest.issues.createComment({
+                    issue_number: context.issue.number,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    body: output
+                })
+
+        - name: Status
+          if: steps.plan.outcome == 'failure'
+          run: exit 1
+          
+  release:
+      runs-on: ubuntu-latest
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/iac'
+      steps:
+          - uses: actions/checkout@v3
+
+          - name: Install TF
+            uses: hashicorp/setup-terraform@v2
+            with:
+              terraform_version: $TERRAFORM_VERSION
+
+          - name: Formatting
+            id: fmt
+            run: terraform fmt -check
+
+          - name: Make Public Key Files
+            run: |
+              mkdir -p ~/.ssh
+              echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa.pub
+              chmod 600 ~/.ssh/id_rsa.pub
+              mkdir -p ~/.aws
+              echo "[default]" >> ~/.aws/credentials
+              echo "aws_access_key_id = $AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
+              echo "aws_secret_access_key = $AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+
+          - name: Init
+            id: init
+            run: terraform init
+
+          - name: Validate
+            id: validate
+            run: terraform validate -no-color
+
+          - name: Plan
+            id: plan
+            run: terraform plan -no-color -input=false
+            continue-on-error: true
+
+          - name: Status
+            if: steps.plan.outcome == 'failure'
+            run: exit 1
+
+          - name: Apply
+            id: apply
+            run: terraform apply -no-color -input=false --auto-approve
+            continue-on-error: true
+
+          - name: Outcome Status
+            if: steps.apply.outcome == 'failure'
+            run: exit 1
+
   deploy-website:
     name: Deploy Website
     runs-on: ubuntu-latest
@@ -32,8 +163,8 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          chmod +x ./scripts/refresh-ec2.sh
-          ./scripts/refresh-ec2.sh
+          chmod +x ../scripts/refresh-ec2.sh
+          ../scripts/refresh-ec2.sh
           rm  ~/.ssh/id_rsa
         continue-on-error: true
       - name: Troubleshoot
