@@ -66,6 +66,11 @@ resource "aws_eip" "website_server" {
   }
 }
 
+# route 53 zone
+resource "aws_route53_zone" "primary" {
+  name = "robertreaney.com"
+}
+
 # domain name registration
 resource "aws_route53_record" "www" {
   zone_id = aws_route53_zone.primary.zone_id
