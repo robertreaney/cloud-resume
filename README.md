@@ -27,3 +27,12 @@ Public Domain: `robertreaney.com`
 6. startup the container with `sudo docker run -it -p 80:5000 container_image_name /bin/bash`
 7. inside the container start the web server `gunicorn --bind 0.0.0.0:5000 app:app`
 8. go to your devbox and goto ec2_public_ip:80
+
+# current CA state
+
+- spin up stack
+- docker exec -it nginx-server /bin/bash
+- apt-get update
+- apt-get install certbot
+- certbot certonly --webroot -w /static -d robertreaney.com -v --cert-name robertreaney.com
+- mv /var/log/letsencrypt/letsencrypt.log /var/log/nginx

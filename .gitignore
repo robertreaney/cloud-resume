@@ -6,3 +6,4 @@ workspace
 .log
 .cache
 .env
+.certificates
