@@ -35,4 +35,5 @@ Public Domain: `robertreaney.com`
 - apt-get update
 - apt-get install certbot
 - certbot certonly --webroot -w /static -d robertreaney.com -v --cert-name robertreaney.com
+- i had to do some moving from the keys made in this folder /etc/letsencrypt/live/example.com
 - mv /var/log/letsencrypt/letsencrypt.log /var/log/nginx
