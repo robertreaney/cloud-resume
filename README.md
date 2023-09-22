@@ -31,6 +31,15 @@ Public Domain: `robertreaney.com`
 # current CA state
 
 - spin up stack on EC2 instance in prod
+- docker run -it --name nginx-server \
+    -p 80:80 \
+    -p 443:443 \
+    -v $(pwd)/services/nginx/nginx-dev.conf:/etc/nginx/nginx.conf:ro \
+    -v $(pwd)/services/website/static:/static:rw \
+    -v $(pwd)/.log/nginx:/var/log/nginx \
+    -v $(pwd)/.certificates/nginx:/etc/letsencrypt/live/robertreaney.com:rw \
+    --network nginx_network \
+    nginx /bin/bash
 - docker exec -it nginx-server /bin/bash
 - apt-get update
 - apt-get install certbot

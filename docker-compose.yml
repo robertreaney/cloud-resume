@@ -28,9 +28,10 @@ services:
       - 443:443
     volumes:
       - ./services/nginx/nginx-dev.conf:/etc/nginx/nginx.conf:ro
-      # - ./services/nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./services/website/static:/static:ro
       - ./.log/nginx:/var/log/nginx
+      - ./services/website/static:/static:rw
+      - ./.certificates/nginx:/etc/letsencrypt/live/robertreaney.com:rw
+
     networks:
       - nginx_network
     depends_on:
