@@ -30,7 +30,7 @@ Public Domain: `robertreaney.com`
 
 # current CA state
 
-- spin up stack
+- spin up stack on EC2 instance in prod
 - docker exec -it nginx-server /bin/bash
 - apt-get update
 - apt-get install certbot
