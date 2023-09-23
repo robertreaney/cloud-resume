@@ -21,7 +21,7 @@
         a { color: #999; text-decoration: none; border-bottom: 1px dotted #999; }
         a:hover { border-bottom-style: solid; color: black; }
         ul { margin: 0 0 32px 17px; }
-        ul li { font-size: 12px; }
+        ul li { font-size: 14px; }
         #objective { width: 500px; float: left; }
         #objective p { font-family: Georgia, Serif; font-style: italic; color: #666; }
         dt { font-style: italic; font-weight: bold; font-size: 18px; text-align: right; padding: 0 26px 0 0; width: 150px; float: left; height: 100px; border-right: 1px solid #999;  }
@@ -121,11 +121,21 @@
                 <div id="changelog" class="scrollable">
                     <p><strong>1.0.1</strong> - Enabled HTTPS to leverage client microphone</p>
                     <ul>
-                        <li>List element</li>
+                        <li>Setup Nginx server to serve static files and handle certificate authentication.</li>
+                        <li>Obtained certficate from the Certificate Authority using certbot.</li>
+                        <li>The biggest hurdle in this task was making sure to serve the static files correctly for the Certificate Authority (CA) with Flask, Nginx, and Docker volumes all communicating correctly.</li>
+                        <li>Spent some additional days figuring out Nginx configurations for 3 different uptime environments: develop, certificate-obtain, production.</li>
                     </ul>
                     <p><strong>1.0.0</strong> - Initial Release</p>
+                    <ul>
+                        <li>Primary service is a Flask app served with Gunicorn.</li>
+                        <li>The front-end is an html/js/css bundle served as static files.</li>
+                        <li>Handled client outing with Nginx for future HTTPS implementation.</li>
+                        <li>Added email/Github/pdf links.</li>
+                        <li>Added a tracker of visits to the website to the front-end that displays the value in a DynamoDB table incremented client-side by a JavasScript API call to an AWS Lambda function.</li>
+                    </ul>
                 </div>
-
+                <hr><br>
                 <h2> AI Assistant </h2>
                 <button id="record">Record</button>
                 <button id="translate">Translate</button>
