@@ -29,8 +29,8 @@ services:
     volumes:
       - ./services/nginx/nginx-dev.conf:/etc/nginx/nginx.conf:ro
       - ./.log/nginx:/var/log/nginx
+      - ./.log/letsencrypt:/var/log/letsencrypt
       - ./services/website/static:/static:rw
-      - ./.certificates/nginx:/etc/letsencrypt/live/robertreaney.com:rw
 
     networks:
       - nginx_network

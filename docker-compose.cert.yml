@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  web:
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=app
+
+  nginx:
+    volumes:
+      - ./services/nginx/nginx-getcert.conf:/etc/nginx/nginx.conf:ro
+      - ./.certificates/nginx:/etc/letsencrypt/live:rw

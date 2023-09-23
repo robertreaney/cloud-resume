@@ -9,12 +9,11 @@ services:
   nginx:
     volumes:
       - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./services/website/static:/static:rw
-      - ./.log/nginx:/var/log/nginx:rw
-      - ./.certificates/nginx:/etc/letsencrypt/live/robertreaney.com:rw
+      - ./.certificates/nginx:/etc/letsencrypt/live:rw
       # - ./.certificates/certbot/www/:/var/www/certbot/:ro
       # - ./.certificates/certbot/conf/:/etc/letsencrypt/:rw
     # restart: always
+    # command: ["tail", "-f", "/dev/null"]
 
   # certbot:
   #   container_name: certbot-server

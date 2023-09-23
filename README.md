@@ -30,10 +30,13 @@ Public Domain: `robertreaney.com`
 
 # current CA state
 
-- spin up stack on EC2 instance in prod, you should get a failure but the nginx container should not close
+- spin up stack on EC2 instance in cert mode
+
+docker compose -f docker-compose.yml -f docker-compose.cert.yml up --build -d --remove-orphans
+
 - docker exec -it nginx-server /bin/bash
 - apt-get update
 - apt-get install certbot
 - certbot certonly --webroot -w /static -d robertreaney.com -v --cert-name robertreaney.com
-- i had to do some moving from the keys made in this folder /etc/letsencrypt/live/example.com
-- mv /var/log/letsencrypt/letsencrypt.log /var/log/nginx
+- /etc/letsencrypt/archive/robertreaney.com should have keys in it
+- /etc/letsencrypt/live/robertreaney.comy has symbolic link to keys
