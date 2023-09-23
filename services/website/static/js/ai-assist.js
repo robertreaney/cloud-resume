@@ -22,7 +22,8 @@ function sendAudioData(audioData) {
     });
 }
 
-function playRecordedAudio() {
+
+document.getElementById('playback').addEventListener('click', function() {
     // const audio = new Audio('/audio');
     // audio.play();
     fetch('/audio')
@@ -31,7 +32,7 @@ function playRecordedAudio() {
             var audio = new Audio(URL.createObjectURL(blob));
             audio.play();
         })
-}
+})
 
 // content
 document.getElementById('record').addEventListener('click', function() {
@@ -62,7 +63,8 @@ document.getElementById('record').addEventListener('click', function() {
 });
 
 document.getElementById('translate').addEventListener('click', function() {
-    fetch('/whisper/smoke')
+    document.getElementById('status').textContent = 'Processing your request...';
+    fetch('/translate_hf')
         .then(response => response.json())
         .then(data => {
             document.getElementById('status').textContent = data.text;
