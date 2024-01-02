@@ -1,6 +1,7 @@
 #!/bin/bash
 # setup
 date +"%Y-%m-%d %H:%M:%S" > /startup-test-proof.log
+sudo groupadd docker
 sudo usermod -aG docker ubuntu
 
 sudo apt-get update
